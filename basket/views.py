@@ -1,7 +1,10 @@
+from django.shortcuts import redirect, resolve_url
 from django.views.generic import ListView
 from .models import BasketItem
 from django.db import models
-
+from django.views.generic import View
+from django.contrib.auth.models import User
+from shop.models import Book
 
 class BasketList(ListView):
     model = BasketItem
@@ -15,3 +18,19 @@ class BasketList(ListView):
         context = super().get_context_data(**kwargs)
         context['price'] = self.get_queryset().aggregate(models.Sum('book__price'))
         return context
+
+# class AddToBasket(View):
+#     model = BasketItem
+
+def add_to_basket(request):
+    if request.method=='POST':
+        book_pk = request.POST.get('book_pk', 0)
+        try:
+            book = Book.objects.get(id=book_pk)
+            BasketItem.objects.create(user = request.user, book=book)
+        except Book.DoesNotExist:
+            pass
+        return redirect('shop_list')
+
+
+

@@ -1,3 +1,19 @@
-{% for book in books%}
-{{ book.title }}
-{% endfor %}
+{% extends 'shop/base.html' %}
+
+{% block content %}
+    <a href="{% url 'book_new' %}">add new book</a>
+
+    {% for book in books %}
+        <h1><a href="{% url 'book_detail' pk=book.pk %}">{{ book.title }}</a></h1>
+        <form method="post" action="{% url 'add' %}">{% csrf_token %}
+            <input type="hidden" name="book_pk" value="{{ book.pk }}"/>
+            <button type="submit">add to basket</button>
+        </form>
+    {% endfor %}
+
+    <ul>
+        {% for item in basket_items %}
+            <li>{{ item.book.title }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

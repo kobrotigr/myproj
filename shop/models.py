@@ -9,10 +9,7 @@ class Book(models.Model):
     price = models.IntegerField()
     ISBN = models.CharField(max_length=15)
     comment = models.TextField()
-    created_date = models.DateTimeField(
-        default=timezone.now)
-    published_date = models.DateTimeField(
-        blank=True, null=True)
+    published_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
