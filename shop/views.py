@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from .models import Book
 from django.urls import reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import ShopForm
 from basket.models import BasketItem
 from django.shortcuts import redirect
@@ -20,10 +21,11 @@ class BookList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['basket_items'] = BasketItem.objects.filter(user=self.request.user)
+        if self.request.user.is_authenticated:
+            context['basket_items'] = BasketItem.objects.filter(user=self.request.user)
         return context
 
-class BookCreate(CreateView):
+class BookCreate(LoginRequiredMixin,CreateView):
     model = Book
     template_name = 'shop/book_edit.html'
     form_class = ShopForm
@@ -36,9 +38,17 @@ class BookCreate(CreateView):
         form.save(True)
         return super(BookCreate, self).form_valid(form)
 
+class BookEdit(LoginRequiredMixin, UpdateView):
+    model = Book
+    template_name = 'shop/book_edit.html'
+    form_class = ShopForm
+
+    def get_success_url(self):
+        return reverse('shop_list')
 
 
-def book_detail(request, pk):
-    book = get_object_or_404(Book, pk=pk)
-    return render(request, 'shop/book_detail.html', {'book': book})
+class BookDetail(DetailView):
+    model = Book
+    template_name = 'shop/book_detail.html'
+
 

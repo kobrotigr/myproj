@@ -1,19 +1,33 @@
 {% extends 'shop/base.html' %}
 
 {% block content %}
+
     <a href="{% url 'book_new' %}">add new book</a>
 
     {% for book in books %}
         <h1><a href="{% url 'book_detail' pk=book.pk %}">{{ book.title }}</a></h1>
+        <a href="{% url 'book_edit' pk=book.pk %}">{{ book.author }}</a>
         <form method="post" action="{% url 'add' %}">{% csrf_token %}
             <input type="hidden" name="book_pk" value="{{ book.pk }}"/>
-            <button type="submit">add to basket</button>
+            {%if user.is_authenticated %}
+                <button type="submit">add to basket</button>
+            {% endif %}
         </form>
     {% endfor %}
 
-    <ul>
-        {% for item in basket_items %}
-            <li>{{ item.book.title }}</li>
-        {% endfor %}
-    </ul>
+    {% if user.is_authenticated and basket_items %}
+        <ul>
+            {% for item in basket_items %}
+                <li>
+                    <form method="post" action="{% url 'del' %}">{% csrf_token %}
+                        {{ item.book.title }}
+                        <input type="hidden" name="item_pk" value="{{ item.pk }}"/>
+
+                        <button type="submit">delete</button>
+
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}

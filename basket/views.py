@@ -19,8 +19,6 @@ class BasketList(ListView):
         context['price'] = self.get_queryset().aggregate(models.Sum('book__price'))
         return context
 
-# class AddToBasket(View):
-#     model = BasketItem
 
 def add_to_basket(request):
     if request.method=='POST':
@@ -32,5 +30,13 @@ def add_to_basket(request):
             pass
         return redirect('shop_list')
 
-
+def del_from_basket(request):
+    if request.method=='POST':
+        item_pk = request.POST.get('item_pk', 0)
+        try:
+            item = BasketItem.objects.get(id=item_pk)
+            item.delete()
+        except BasketItem.DoesNotExist:
+            pass
+        return redirect('shop_list')
 
