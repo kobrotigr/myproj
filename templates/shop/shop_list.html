@@ -3,17 +3,30 @@
 {% block content %}
 
     <a href="{% url 'book_new' %}">add new book</a>
+    <a href="{% url 'ord_new' %}">make ord</a>
 
     {% for book in books %}
         <h1><a href="{% url 'book_detail' pk=book.pk %}">{{ book.title }}</a></h1>
         <a href="{% url 'book_edit' pk=book.pk %}">{{ book.author }}</a>
         <form method="post" action="{% url 'add' %}">{% csrf_token %}
             <input type="hidden" name="book_pk" value="{{ book.pk }}"/>
-            {%if user.is_authenticated %}
+            {% if user.is_authenticated %}
                 <button type="submit">add to basket</button>
             {% endif %}
         </form>
     {% endfor %}
+
+    {% if is_paginated %}
+        {% if page_obj.has_previous %}
+            <a href="/?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+        {% for page in page_obj.paginator.page_range %}
+            <li><a href="?page={{ page }}">{{ page }}</a></li>
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <a href="/?page={{ page_obj.next_page_number }}">next</a>
+        {% endif %}
+    {% endif %}
 
     {% if user.is_authenticated and basket_items %}
         <ul>

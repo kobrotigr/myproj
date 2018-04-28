@@ -1,16 +1,11 @@
-from django.shortcuts import render,get_object_or_404
-from django.utils import timezone
-from django.contrib.auth.models import User
-
-
 # Create your views here.
-from .models import Book
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import ShopForm
+
 from basket.models import BasketItem
-from django.shortcuts import redirect
+from .forms import ShopForm
+from .models import Book
 
 
 class BookList(ListView):
@@ -18,6 +13,7 @@ class BookList(ListView):
     template_name = 'shop/shop_list.html'
     queryset = Book.objects.all()
     context_object_name = 'books'
+    paginate_by = 3
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
