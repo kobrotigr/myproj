@@ -6,6 +6,7 @@ class Book(models.Model):
     User = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     author = models.CharField(max_length=50)
     title = models.CharField(max_length=200)
+    document = models.FileField(upload_to='documents/', null=True)
     price = models.FloatField()
     ISBN = models.CharField(max_length=15)
     comment = models.TextField()

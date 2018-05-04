@@ -22,6 +22,7 @@ class OrdCreate(LoginRequiredMixin, CreateView):
         return reverse('shop_list')
 
     def form_valid(self, form):
+
         form.instance.user = self.request.user
         form.save(True)
         basket_list = BasketItem.objects.filter(user=self.request.user)

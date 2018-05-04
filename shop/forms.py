@@ -6,4 +6,4 @@ class ShopForm(forms.ModelForm):
 
     class Meta:
         model = Book
-        fields = ('title','author','price','ISBN','comment',)
+        fields = ('title','author','price','ISBN','comment','document')

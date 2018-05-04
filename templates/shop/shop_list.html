@@ -6,6 +6,7 @@
     <a href="{% url 'ord_new' %}">make ord</a>
 
     {% for book in books %}
+        {% if book.document %}<img src="{{ book.document.url }}" /> {% endif %}
         <h1><a href="{% url 'book_detail' pk=book.pk %}">{{ book.title }}</a></h1>
         <a href="{% url 'book_edit' pk=book.pk %}">{{ book.author }}</a>
         <form method="post" action="{% url 'add' %}">{% csrf_token %}

@@ -6,6 +6,7 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from basket.models import BasketItem
 from .forms import ShopForm
 from .models import Book
+from django.shortcuts import redirect, render
 
 
 class BookList(ListView):
@@ -46,5 +47,3 @@ class BookEdit(LoginRequiredMixin, UpdateView):
 class BookDetail(DetailView):
     model = Book
     template_name = 'shop/book_detail.html'
-
-
