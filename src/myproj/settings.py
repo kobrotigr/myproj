@@ -25,7 +25,7 @@ SECRET_KEY = 'iuzn(#lg#8!7p%33lrb84wpjp(th!g5lgwco1_u4mf&@dmfri0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
