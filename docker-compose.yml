@@ -1,0 +1,12 @@
+version:  "3"
+services:
+  myproj:
+    build: .
+    image: myproj
+    container_name: myproj
+    ports: 
+      - 8000:8000
+    volumes:
+      - ./volumes/database:/database
+      - ./volumes/static:/srv/static
+      - ./volumes/media:/srv/media
